@@ -1,0 +1,37 @@
+Console Version of a Drawing Program
+
+
+1. PROGRAMMING LANGUAGE - C++
+
+
+2. COMPILING & RUNNING 
+
+The code was tested: 
+
+- on Linux (tested on Ubuntu 14.04 with gcc 4.8.4, I attached the makefile) :
+	- compile: “make” or “g++ console_drawing.cpp –o console_drawing”
+	- run: “./console_drawing”
+
+- using Microsoft Visual Studio 2010
+
+
+3. IMPLEMENTATION
+
+The canvas is treated as a matrix with h lines and w columns of maximum size 100. Two more lines and two more columns were added for the frame of the canvas. The draw area lines are between 1 and h and the columns are between 1 and w. 
+The coordinates of the frame inside the matrix are lines/columns 0, h+1 and w+1, so the user can choose coordinates with values between 1 and w, respectively 1 and h.
+
+In the file test.txt I wrote commands that check all the considered situations, valid or not. To run the test choose the command “T”. 
+
+The command (given by the user or read from the test file) is considered a string that is parsed, using sstream and considering “ “ as a separator. The first element of the string gives the name of the command. Depending on the command, the next parameters are extracted from the string in function doCommands. 
+
+For each command except Q (Quit) and T (used for test) were implemented separate functions. For implementing “Q”, I defined a Boolean variable nextComm that has to be true for the next command to be accepted. When the command is “Q”, nextComm becomes false.
+
+The other required commands are defined in the functions:
+
+- void newCanavas(int w, int h) for C w h : Creates a new canvas with the w and h sizes. A frame was added that doesn't affect the drawing area. Possible considered error: the sizes of the canvas are smaller or equal with 0.
+
+- void drawLine(int x1, int y1, int x2, int y2) for L x1 y1 x2 y2 : Draws a line from (x1, y1) to (x2, y2) using the lineChar character (I used “x”). Possible considered errors are: the line is not vertical or horizontal, the 2 points are identical, the line is outside the drawing area (that includes also the edge of the canvas)
+
+- void drawRectangle(int x1, int y1, int x2, int y2) for R x1 y1 x2 y2 : creates a new rectangle. It uses the drawLine function to draw the 4 lines of the rectangle. Possible considered errors: (x1,y1) is not the upper left corner and (x2,y2)is not the lower right corner, the coordinates are outside the drawing area.
+
+- void fillArea(int x, int y, char c) for B x y c : fills area connected to the point (x, y) only  if the point belongs to an empty space, not to a line or to a rectangle line. Then it recursively checks the 8 neighbouring points of (x, y). Possible considered errors:the point is outside the drawing area, the point belongs to a line or rectangle, the point is already coloured in colour c
